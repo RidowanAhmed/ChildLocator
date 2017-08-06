@@ -41,7 +41,6 @@ public class ParentLoginFragment extends Fragment {
         return view_parentLoginFragment;
     }
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
