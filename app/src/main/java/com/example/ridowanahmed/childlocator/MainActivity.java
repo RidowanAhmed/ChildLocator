@@ -1,6 +1,7 @@
 package com.example.ridowanahmed.childlocator;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         imageView_parentLogin = (ImageView) findViewById(R.id.imageView_parentLogin);
         imageView_childLogin = (ImageView) findViewById(R.id.imageView_childLogin);
 
+
         imageView_parentLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         imageView_childLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                imageView_childLogin.setColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY);
                 Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                 startActivity(intent);
             }
