@@ -1,8 +1,6 @@
 package com.example.ridowanahmed.childlocator.Fragment;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +18,10 @@ public class ParentLoginFragment extends Fragment {
     EditText editText_parentLoginEmail, editText_parentLoginPassword;
     Button button_parentLogin;
 
-    OnLoginListener mOnLoginListener;
+//    OnLoginListener mOnLoginListener;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance){
-        View view_parentLoginFragment = inflater.inflate(R.layout.parent_login_fragment, container, false);
+        View view_parentLoginFragment = inflater.inflate(R.layout.fragment_parent_login, container, false);
 
         editText_parentLoginEmail = (EditText) view_parentLoginFragment.findViewById(R.id.editText_login_email);
         editText_parentLoginPassword = (EditText) view_parentLoginFragment.findViewById(R.id.editText_login_password);
@@ -34,31 +32,32 @@ public class ParentLoginFragment extends Fragment {
             public void onClick(View v) {
                 String email = editText_parentLoginEmail.getText().toString().trim();
                 String password = editText_parentLoginPassword.getText().toString().trim();
-                mOnLoginListener.loginUser(email, password);
+//                mOnLoginListener.loginUser(email, password);
             }
         });
 
         return view_parentLoginFragment;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Activity activity = (Activity) context;
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        Activity activity = (Activity) context;
+//
+//        try {
+//            mOnLoginListener = (OnLoginListener) activity;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(activity.toString() + " must implement OnLoginListener");
+//        }
+//    }
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        mOnLoginListener = null;
+//    }
+//
+//    public interface OnLoginListener {
+//        void loginUser(String userEmail, String userPassword);
+//    }
 
-        try {
-            mOnLoginListener = (OnLoginListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnLoginListener");
-        }
-    }
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mOnLoginListener = null;
-    }
-
-    public interface OnLoginListener {
-        void loginUser(String userEmail, String userPassword);
-    }
 }

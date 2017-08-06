@@ -1,8 +1,6 @@
 package com.example.ridowanahmed.childlocator.Fragment;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +17,10 @@ import com.example.ridowanahmed.childlocator.R;
 public class ParentRegisterFragment extends Fragment {
     EditText editText_registerName, editText_registerEmail, editText_registerPassword;
     Button button_register;
-    OnRegisterListener mOnRegisterListener;
+//    OnRegisterListener mOnRegisterListener;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance) {
-        View view_parentRegisterFragment = inflater.inflate(R.layout.parent_register_fragment, container, false);
+        View view_parentRegisterFragment = inflater.inflate(R.layout.fragment_parent_register, container, false);
 
         editText_registerName = (EditText) view_parentRegisterFragment.findViewById(R.id.editText_registerName);
         editText_registerEmail = (EditText) view_parentRegisterFragment.findViewById(R.id.editText_registerEmail);
@@ -35,31 +33,32 @@ public class ParentRegisterFragment extends Fragment {
                 String name = editText_registerName.getText().toString().trim();
                 String email = editText_registerEmail.getText().toString().trim();
                 String password = editText_registerPassword.getText().toString().trim();
-                mOnRegisterListener.registerUser(name, email, password);
+//                mOnRegisterListener.registerUser(name, email, password);
             }
         });
 
         return view_parentRegisterFragment;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Activity activity = (Activity) context;
-        try {
-            mOnRegisterListener = (OnRegisterListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnRegisterListener");
-        }
-    }
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        Activity activity = (Activity) context;
+//        try {
+//            mOnRegisterListener = (OnRegisterListener) activity;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(activity.toString() + " must implement OnRegisterListener");
+//        }
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        mOnRegisterListener = null;
+//    }
+//
+//    public interface OnRegisterListener {
+//        void registerUser(String userName, String userEmail, String userPassword);
+//    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mOnRegisterListener = null;
-    }
-
-    public interface OnRegisterListener {
-        void registerUser(String userName, String userEmail, String userPassword);
-    }
 }
