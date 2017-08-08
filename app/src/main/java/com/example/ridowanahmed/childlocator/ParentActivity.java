@@ -1,6 +1,7 @@
 package com.example.ridowanahmed.childlocator;
 
 
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +30,7 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
 
     DatabaseReference childData;
     ChildInformation mChildInformation;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,9 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        mobileNumber = getIntent().getExtras().getString(ParentLoginActivity.PARENT_MOBILE_NUMBER);
+        sharedPreferences = ParentActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
+
+        mobileNumber = sharedPreferences.getString(getString(R.string.PARENT_MOBILE), "");
         childData = FirebaseDatabase.getInstance().getReference("Children").child(mobileNumber);
 
         childData.addValueEventListener(new ValueEventListener() {

@@ -13,8 +13,8 @@ import com.example.ridowanahmed.childlocator.Registration.ChildLoginActivity;
 import com.example.ridowanahmed.childlocator.Registration.ParentLoginActivity;
 
 public class MainActivity extends AppCompatActivity {
-
     ImageView imageView_parentLogin, imageView_childLogin;
+    SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +24,18 @@ public class MainActivity extends AppCompatActivity {
         imageView_parentLogin = (ImageView) findViewById(R.id.imageView_parentLogin);
         imageView_childLogin = (ImageView) findViewById(R.id.imageView_childLogin);
 
+        mSharedPreferences = MainActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
 
         imageView_parentLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            String mobile = mSharedPreferences.getString(getString(R.string.PARENT_MOBILE), "");
 
-            Intent intent = new Intent(getApplicationContext(), ParentLoginActivity.class);
-            startActivity(intent);
-
+            if(!TextUtils.isEmpty(mobile)) {
+                startActivity(new Intent(getApplicationContext(), ParentActivity.class));
+            } else {
+                startActivity(new Intent(getApplicationContext(), ParentLoginActivity.class));
+            }
             }
         });
 
@@ -40,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                imageView_childLogin.setColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY);
 
-                SharedPreferences mSharedPreferences;
-                mSharedPreferences = MainActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
                 String name = mSharedPreferences.getString(getString(R.string.CHILD_NAME), "");
                 String mobile = mSharedPreferences.getString(getString(R.string.CHILD_MOBILE), "");
 

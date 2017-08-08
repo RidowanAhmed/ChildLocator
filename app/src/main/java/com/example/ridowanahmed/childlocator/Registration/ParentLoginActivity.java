@@ -29,9 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
  * Created by Ridowan Ahmed on 0002, August, 2, 2017.
  */
 
-public class ParentLoginActivity extends AppCompatActivity implements ParentRegisterFragment.OnRegisterListener, ParentLoginFragment.OnLoginListener{
-    public static final String PARENT_MOBILE_NUMBER = "018202Number";
-    String mobile;
+public class ParentLoginActivity extends AppCompatActivity implements ParentRegisterFragment.OnRegisterListener, ParentLoginFragment.OnLoginListener {
     TextView textView_register;
 
     ParentLoginFragment parentLoginFragment;
@@ -39,26 +37,18 @@ public class ParentLoginActivity extends AppCompatActivity implements ParentRegi
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
-    private Intent mIntent;
-    private SharedPreferences mSharedPreferences;
 
     private boolean flag = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent_login);
-        mIntent = new Intent(getApplicationContext(), ParentActivity.class);
-
-        mSharedPreferences = ParentLoginActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
-        mobile = mSharedPreferences.getString(getString(R.string.PARENT_MOBILE), "");
 
         progressDialog = new ProgressDialog(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() != null) {
-            //start profile activity
-            mIntent.putExtra(mobile, PARENT_MOBILE_NUMBER);
-            startActivity(mIntent);
+            startActivity(new Intent(getApplicationContext(), ParentActivity.class));
         }
 
         textView_register = (TextView) findViewById(R.id.textView_register);
@@ -123,11 +113,11 @@ public class ParentLoginActivity extends AppCompatActivity implements ParentRegi
 
         saveParentData(userName, userMobile, userEmail, userPassword);
 
-        mIntent.putExtra(userMobile, PARENT_MOBILE_NUMBER);
-        startActivity(mIntent);
+        startActivity(new Intent(getApplicationContext(), ParentActivity.class));
     }
 
     private void saveParentData(String userName, String userMobile, String userEmail, String userPassword) {
+        SharedPreferences mSharedPreferences = ParentLoginActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
         mEditor.putString(getString(R.string.PARENT_MOBILE), userMobile);
         mEditor.commit();
@@ -149,9 +139,7 @@ public class ParentLoginActivity extends AppCompatActivity implements ParentRegi
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressDialog.dismiss();
                 if(task.isSuccessful()) {
-                    //start profile activity
-                    mIntent.putExtra(mobile, PARENT_MOBILE_NUMBER);
-                    startActivity(mIntent);
+                    startActivity(new Intent(getApplicationContext(), ParentActivity.class));
                 } else {
                     Toast.makeText(getApplicationContext(), "Couldn't Log In. Please try again", Toast.LENGTH_SHORT).show();
                 }
