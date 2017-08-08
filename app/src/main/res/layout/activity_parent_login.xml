@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/parent"
-    android:backgroundTint="#80FFFFFF"
+    android:backgroundTint="#60ccffcc"
     android:backgroundTintMode="src_over"
     tools:context="com.example.ridowanahmed.childlocator.MainActivity">
 
@@ -16,7 +16,7 @@
         android:layout_marginTop="16dp"
         android:textAlignment="center"
         android:textSize="24sp"
-        android:textColor="#cc3333"
+        android:textColor="#003300"
         android:textStyle="bold"
         android:text="Parent Dashboard"/>
 
@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textColor="#cc3333"
+        android:textColor="#003300"
         android:textStyle="bold|italic"
         android:text="No account yet? Register here"/>
 

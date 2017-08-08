@@ -35,19 +35,16 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="Child Locator"></activity>
-
+            android:label="Child Locator" />
         <activity
-            android:name=".Registration.ParentDashboard"
-            android:label="Child Locator"></activity>
-
+            android:name=".Registration.ParentLoginActivity"
+            android:label="Child Locator" />
         <activity
             android:name=".MapsActivity"
-            android:label="Map"></activity>
-
+            android:label="Map" />
         <activity
             android:name=".ParentActivity"
-            android:label="@string/title_activity_parent"></activity>
+            android:label="@string/title_activity_parent" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,6 +52,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Registration.ChildLoginActivity"></activity>
     </application>
 
 </manifest>

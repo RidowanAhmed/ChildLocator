@@ -6,19 +6,24 @@ import android.location.Location;
  * Created by Ridowan Ahmed on 0029, July, 29, 2017.
  */
 
-public class MyLocation {
-
+public class ChildInformation {
+    String childName;
     double latitude;
     double longitude;
     long time;
 
-    public MyLocation() {
+    public ChildInformation() {
     }
 
-    public MyLocation(double latitude, double longitude, long time) {
+    public ChildInformation(String childName, double latitude, double longitude, long time) {
+        this.childName = childName;
         this.latitude = latitude;
         this.longitude = longitude;
         this.time = time;
+    }
+
+    public String getChildName() {
+        return childName;
     }
 
     public double getLatitude() {

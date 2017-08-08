@@ -2,4 +2,11 @@
     <string name="app_name">Child Locator</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_parent">Map</string>
+
+    <string name="PREF_FILE">CHILD_LOCATOR_PREF_FILE</string>
+
+    <string name="PARENT_MOBILE">PARENT_MOBILE_INFO</string>
+
+    <string name="CHILD_NAME">CHILD_NAME_INFO</string>
+    <string name="CHILD_MOBILE">CHILD_MOBILE_INFO</string>
 </resources>

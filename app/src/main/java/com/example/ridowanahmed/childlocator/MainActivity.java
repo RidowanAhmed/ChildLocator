@@ -1,13 +1,16 @@
 package com.example.ridowanahmed.childlocator;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.example.ridowanahmed.childlocator.Registration.ParentDashboard;
+import com.example.ridowanahmed.childlocator.Registration.ChildLoginActivity;
+import com.example.ridowanahmed.childlocator.Registration.ParentLoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-            Intent intent = new Intent(getApplicationContext(), ParentDashboard.class);
+            Intent intent = new Intent(getApplicationContext(), ParentLoginActivity.class);
             startActivity(intent);
 
             }
@@ -36,8 +39,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                imageView_childLogin.setColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY);
-                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                startActivity(intent);
+
+                SharedPreferences mSharedPreferences;
+                mSharedPreferences = MainActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
+                String name = mSharedPreferences.getString(getString(R.string.CHILD_NAME), "");
+                String mobile = mSharedPreferences.getString(getString(R.string.CHILD_MOBILE), "");
+
+                if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(mobile)) {
+                    Log.e("MainActivity", name + mobile);
+                    startActivity(new Intent(getApplicationContext(), MapsActivity.class));
+
+                } else {
+                    Log.e("MainActivity", "nothing");
+                    startActivity(new Intent(getApplicationContext(), ChildLoginActivity.class));
+                }
             }
         });
     }

@@ -1,6 +1,8 @@
 package com.example.ridowanahmed.childlocator;
 
 import android.Manifest;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -10,12 +12,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Gravity;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ridowanahmed.childlocator.HelperClass.MyLocation;
+import com.example.ridowanahmed.childlocator.HelperClass.ChildInformation;
+import com.example.ridowanahmed.childlocator.Registration.ChildLoginActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -118,7 +120,7 @@ public class MapsActivity extends FragmentActivity implements
         currentMarker = mMap.addMarker(markerOptions);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomBy(5));
+        mMap.animateCamera(CameraUpdateFactory.zoomBy(10));
 
         if(googleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
@@ -127,10 +129,14 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     private void saveData(Location lastLocation) {
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference("Location").child("child");
+        SharedPreferences mSharedPreferences = MapsActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
+        String childName = mSharedPreferences.getString(getString(R.string.CHILD_NAME), "");
+        String childMobile = mSharedPreferences.getString(getString(R.string.CHILD_MOBILE), "");
+        Log.e("MapsActivity", childName + childMobile);
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference("Children").child(childMobile);
 
-        MyLocation myLocation = new MyLocation(lastLocation.getLatitude(), lastLocation.getLongitude(), lastLocation.getTime());
-        db.setValue(myLocation);
+        ChildInformation mChildInformation = new ChildInformation(childName,lastLocation.getLatitude(), lastLocation.getLongitude(), lastLocation.getTime());
+        db.setValue(mChildInformation);
     }
 
     @Override

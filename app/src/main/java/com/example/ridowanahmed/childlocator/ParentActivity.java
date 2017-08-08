@@ -7,7 +7,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import com.example.ridowanahmed.childlocator.HelperClass.MyLocation;
+import com.example.ridowanahmed.childlocator.HelperClass.ChildInformation;
+import com.example.ridowanahmed.childlocator.Registration.ParentLoginActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,11 +23,12 @@ import com.google.firebase.database.ValueEventListener;
 
 
 public class ParentActivity extends FragmentActivity implements OnMapReadyCallback {
+    private String mobileNumber;
 
     private GoogleMap mMap;
 
     DatabaseReference childData;
-    MyLocation location;
+    ChildInformation mChildInformation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,19 +38,20 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        childData = FirebaseDatabase.getInstance().getReference("Location").child("child");
+        mobileNumber = getIntent().getExtras().getString(ParentLoginActivity.PARENT_MOBILE_NUMBER);
+        childData = FirebaseDatabase.getInstance().getReference("Children").child(mobileNumber);
 
         childData.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                location = dataSnapshot.getValue(MyLocation.class);
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                mChildInformation = dataSnapshot.getValue(ChildInformation.class);
+                LatLng latLng = new LatLng(mChildInformation.getLatitude(), mChildInformation.getLongitude());
 
-                Log.e("Lati " + location.getLatitude() , "Longi " + location.getLongitude());
+                Log.e("Lati " + mChildInformation.getLatitude() , "Longi " + mChildInformation.getLongitude());
 
-                String title = "R";
+                String title = mChildInformation.getChildName();
                 MarkerOptions locationMarker = new MarkerOptions().position(latLng).title(title);
-                locationMarker.snippet(calculateTime(location.getTime()));
+                locationMarker.snippet(calculateTime(mChildInformation.getTime()));
 
                 mMap.addMarker(locationMarker).showInfoWindow();
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
