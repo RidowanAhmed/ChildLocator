@@ -25,9 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ParentActivity extends FragmentActivity implements OnMapReadyCallback {
     private String mobileNumber;
-
     private GoogleMap mMap;
-
     DatabaseReference childData;
     ChildInformation mChildInformation;
     SharedPreferences sharedPreferences;
@@ -48,22 +46,27 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
         childData.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mChildInformation = dataSnapshot.getValue(ChildInformation.class);
-                LatLng latLng = new LatLng(mChildInformation.getLatitude(), mChildInformation.getLongitude());
+                if(dataSnapshot.exists()) {
+                    mChildInformation = dataSnapshot.getValue(ChildInformation.class);
+                    LatLng latLng = new LatLng(mChildInformation.getLatitude(), mChildInformation.getLongitude());
 
-                Log.e("Lati " + mChildInformation.getLatitude() , "Longi " + mChildInformation.getLongitude());
+                    Log.e("Lati " + mChildInformation.getLatitude() , "Longi " + mChildInformation.getLongitude());
 
-                String title = mChildInformation.getChildName();
-                MarkerOptions locationMarker = new MarkerOptions().position(latLng).title(title);
-                locationMarker.snippet(calculateTime(mChildInformation.getTime()));
+                    String title = mChildInformation.getChildName();
+                    MarkerOptions locationMarker = new MarkerOptions().position(latLng).title(title);
+                    locationMarker.snippet(calculateTime(mChildInformation.getTime()));
 
-                mMap.addMarker(locationMarker).showInfoWindow();
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                mMap.animateCamera(CameraUpdateFactory.zoomBy(14));
+                    mMap.addMarker(locationMarker).showInfoWindow();
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                    mMap.animateCamera(CameraUpdateFactory.zoomBy(14));
 
-                Toast toast = Toast.makeText(getApplicationContext(), "Locating " + title, Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 30);
-                toast.show();
+                    Toast toast = Toast.makeText(getApplicationContext(), "Locating " + title, Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 30);
+                    toast.show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Can't find your children. Try again later", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -74,16 +77,13 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
     }
 
     private String calculateTime(long timeInMillis){
-
         timeInMillis -= System.currentTimeMillis();
         int hours = (int) ((timeInMillis / (1000 * 60 * 60)));
         int minutes = (int) ((timeInMillis / (1000 * 60)) % 60);
         int seconds = (int) ((timeInMillis / 1000) % 60);
-
         return hours+":"+minutes+":"+seconds;
     }
 }
