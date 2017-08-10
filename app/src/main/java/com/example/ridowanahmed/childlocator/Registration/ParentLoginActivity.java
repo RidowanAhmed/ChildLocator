@@ -119,7 +119,7 @@ public class ParentLoginActivity extends AppCompatActivity implements ParentRegi
     private void saveParentData(String userName, String userMobile, String userEmail, String userPassword) {
         SharedPreferences mSharedPreferences = ParentLoginActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
         SharedPreferences.Editor mEditor = mSharedPreferences.edit();
-        mEditor.putString(getString(R.string.PARENT_MOBILE), userMobile);
+        mEditor.putString(getString(R.string.MOBILE_NUMBER), userMobile);
         mEditor.commit();
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference("Parent").child(userMobile);

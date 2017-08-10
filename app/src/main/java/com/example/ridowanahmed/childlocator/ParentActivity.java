@@ -9,7 +9,6 @@ import android.view.Gravity;
 import android.widget.Toast;
 
 import com.example.ridowanahmed.childlocator.HelperClass.ChildInformation;
-import com.example.ridowanahmed.childlocator.Registration.ParentLoginActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,7 +39,7 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
 
         sharedPreferences = ParentActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
 
-        mobileNumber = sharedPreferences.getString(getString(R.string.PARENT_MOBILE), "");
+        mobileNumber = sharedPreferences.getString(getString(R.string.MOBILE_NUMBER), "");
         childData = FirebaseDatabase.getInstance().getReference("Children").child(mobileNumber);
 
         childData.addValueEventListener(new ValueEventListener() {
@@ -50,7 +49,7 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
                     mChildInformation = dataSnapshot.getValue(ChildInformation.class);
                     LatLng latLng = new LatLng(mChildInformation.getLatitude(), mChildInformation.getLongitude());
 
-                    Log.e("Lati " + mChildInformation.getLatitude() , "Longi " + mChildInformation.getLongitude());
+                    Log.e("Latitude " + mChildInformation.getLatitude() , "Longitude " + mChildInformation.getLongitude());
 
                     String title = mChildInformation.getChildName();
                     MarkerOptions locationMarker = new MarkerOptions().position(latLng).title(title);

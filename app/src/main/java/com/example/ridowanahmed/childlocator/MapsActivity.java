@@ -1,7 +1,6 @@
 package com.example.ridowanahmed.childlocator;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -17,7 +16,6 @@ import android.view.Gravity;
 import android.widget.Toast;
 
 import com.example.ridowanahmed.childlocator.HelperClass.ChildInformation;
-import com.example.ridowanahmed.childlocator.Registration.ChildLoginActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -32,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -113,6 +112,7 @@ public class MapsActivity extends FragmentActivity implements
             currentMarker.remove();
         }
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        Log.e("Child Location", "Latitude: " + location.getLatitude() + " Longitude " + location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Location");
@@ -131,12 +131,24 @@ public class MapsActivity extends FragmentActivity implements
     private void saveData(Location lastLocation) {
         SharedPreferences mSharedPreferences = MapsActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
         String childName = mSharedPreferences.getString(getString(R.string.CHILD_NAME), "");
-        String childMobile = mSharedPreferences.getString(getString(R.string.CHILD_MOBILE), "");
+        String childMobile = mSharedPreferences.getString(getString(R.string.MOBILE_NUMBER), "");
         Log.e("MapsActivity", childName + childMobile);
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference("Children").child(childMobile);
+
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Children").child(childMobile);
 
         ChildInformation mChildInformation = new ChildInformation(childName,lastLocation.getLatitude(), lastLocation.getLongitude(), lastLocation.getTime());
-        db.setValue(mChildInformation);
+        dbRef.setValue(mChildInformation, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    Log.e("Data could not be saved", databaseError.getMessage());
+                    Toast.makeText(getApplicationContext(), "Data save failed. Try again later", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Data saved successfully", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override

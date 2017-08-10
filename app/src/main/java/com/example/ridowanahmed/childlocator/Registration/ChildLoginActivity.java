@@ -39,7 +39,7 @@ public class ChildLoginActivity extends AppCompatActivity {
                 SharedPreferences mSharedPreferences = ChildLoginActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
                 SharedPreferences.Editor mEditor = mSharedPreferences.edit();
                 mEditor.putString(getString(R.string.CHILD_NAME), name);
-                mEditor.putString(getString(R.string.CHILD_MOBILE), mobile);
+                mEditor.putString(getString(R.string.MOBILE_NUMBER), mobile);
                 mEditor.commit();
 
                 startActivity(new Intent(getApplicationContext(), MapsActivity.class));

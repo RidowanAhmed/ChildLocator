@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         imageView_parentLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            String mobile = mSharedPreferences.getString(getString(R.string.PARENT_MOBILE), "");
+            String mobile = mSharedPreferences.getString(getString(R.string.MOBILE_NUMBER), "");
 
             if(!TextUtils.isEmpty(mobile)) {
                 startActivity(new Intent(getApplicationContext(), ParentActivity.class));
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 //                imageView_childLogin.setColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY);
 
                 String name = mSharedPreferences.getString(getString(R.string.CHILD_NAME), "");
-                String mobile = mSharedPreferences.getString(getString(R.string.CHILD_MOBILE), "");
+                String mobile = mSharedPreferences.getString(getString(R.string.MOBILE_NUMBER), "");
 
                 if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(mobile)) {
                     Log.e("MainActivity", name + mobile);
