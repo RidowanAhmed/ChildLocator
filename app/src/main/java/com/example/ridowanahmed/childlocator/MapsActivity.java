@@ -46,6 +46,7 @@ public class MapsActivity extends FragmentActivity implements
     private Location lastLocation;
     private Marker currentMarker;
 
+
     public static final int REQUEST_LOCATION_CODE = 99;
 
     @Override
