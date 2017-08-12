@@ -14,6 +14,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,30 +23,35 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class ParentActivity extends FragmentActivity implements OnMapReadyCallback {
+public class ParentMapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private String mobileNumber;
     private GoogleMap mMap;
     DatabaseReference childData;
     ChildInformation mChildInformation;
     SharedPreferences sharedPreferences;
+    private Marker currentMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_maps_parent);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.parent_map);
         mapFragment.getMapAsync(this);
 
-        sharedPreferences = ParentActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
+        sharedPreferences = ParentMapsActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
 
         mobileNumber = sharedPreferences.getString(getString(R.string.MOBILE_NUMBER), "");
+
         childData = FirebaseDatabase.getInstance().getReference("Children").child(mobileNumber);
 
         childData.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
+                    if(currentMarker !=  null){
+                        currentMarker.remove();
+                    }
                     mChildInformation = dataSnapshot.getValue(ChildInformation.class);
                     LatLng latLng = new LatLng(mChildInformation.getLatitude(), mChildInformation.getLongitude());
 
@@ -54,8 +60,8 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
                     String title = mChildInformation.getChildName();
                     MarkerOptions locationMarker = new MarkerOptions().position(latLng).title(title);
                     locationMarker.snippet(calculateTime(mChildInformation.getTime()));
-
-                    mMap.addMarker(locationMarker).showInfoWindow();
+                    currentMarker = mMap.addMarker(locationMarker);
+                    currentMarker.showInfoWindow();
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                     mMap.animateCamera(CameraUpdateFactory.zoomBy(14));
 
@@ -76,13 +82,29 @@ public class ParentActivity extends FragmentActivity implements OnMapReadyCallba
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        Log.e("onMapReady", mMap.toString());
     }
 
     private String calculateTime(long timeInMillis){
-        timeInMillis -= System.currentTimeMillis();
-        int hours = (int) ((timeInMillis / (1000 * 60 * 60)));
+//        timeInMillis -= System.currentTimeMillis();
+        int hours = (int) ((timeInMillis / (1000 * 60 * 60)) % 60);
         int minutes = (int) ((timeInMillis / (1000 * 60)) % 60);
         int seconds = (int) ((timeInMillis / 1000) % 60);
-        return hours+":"+minutes+":"+seconds;
+
+        String currentTime;
+        if(hours >= 12) {
+            hours -= 12;
+            currentTime = hours+":"+minutes+":"+seconds + " PM";
+        } else {
+            currentTime = hours+":"+minutes+":"+seconds + " AM";
+        }
+        return currentTime;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e("ParentMaps Destroyed", mobileNumber);
+        finish();
     }
 }

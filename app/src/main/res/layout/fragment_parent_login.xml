@@ -17,6 +17,14 @@
 
     <EditText
         android:background="#cecece"
+        android:id="@+id/editText_login_mobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:inputType="phone"
+        android:hint="Enter Your Mobile Number"/>
+    <EditText
+        android:background="#cecece"
         android:id="@+id/editText_login_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

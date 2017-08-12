@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.EditText;
 
-import com.example.ridowanahmed.childlocator.MapsActivity;
+import com.example.ridowanahmed.childlocator.ChildMapsActivity;
 import com.example.ridowanahmed.childlocator.R;
 
 public class ChildLoginActivity extends AppCompatActivity {
@@ -42,7 +42,8 @@ public class ChildLoginActivity extends AppCompatActivity {
                 mEditor.putString(getString(R.string.MOBILE_NUMBER), mobile);
                 mEditor.commit();
 
-                startActivity(new Intent(getApplicationContext(), MapsActivity.class));
+                startActivity(new Intent(getApplicationContext(), ChildMapsActivity.class));
+                finish();
             }
         });
     }

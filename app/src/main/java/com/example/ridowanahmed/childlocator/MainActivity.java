@@ -13,7 +13,8 @@ import com.example.ridowanahmed.childlocator.Registration.ChildLoginActivity;
 import com.example.ridowanahmed.childlocator.Registration.ParentLoginActivity;
 
 public class MainActivity extends AppCompatActivity {
-    ImageView imageView_parentLogin, imageView_childLogin;
+    private ImageView imageView_parentLogin, imageView_childLogin;
+    private String parentMobile;
     SharedPreferences mSharedPreferences;
 
     @Override
@@ -25,16 +26,17 @@ public class MainActivity extends AppCompatActivity {
         imageView_childLogin = (ImageView) findViewById(R.id.imageView_childLogin);
 
         mSharedPreferences = MainActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
+        parentMobile = mSharedPreferences.getString(getString(R.string.MOBILE_NUMBER), "");
+        Log.e("MainActivity ", parentMobile);
 
         imageView_parentLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            String mobile = mSharedPreferences.getString(getString(R.string.MOBILE_NUMBER), "");
-
-            if(!TextUtils.isEmpty(mobile)) {
-                startActivity(new Intent(getApplicationContext(), ParentActivity.class));
-            } else {
+            if(TextUtils.isEmpty(parentMobile)) {
                 startActivity(new Intent(getApplicationContext(), ParentLoginActivity.class));
+
+            } else {
+                startActivity(new Intent(getApplicationContext(), ParentMapsActivity.class));
             }
             }
         });
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(mobile)) {
                     Log.e("MainActivity", name + mobile);
-                    startActivity(new Intent(getApplicationContext(), MapsActivity.class));
+                    startActivity(new Intent(getApplicationContext(), ChildMapsActivity.class));
 
                 } else {
                     Log.e("MainActivity", "nothing");
@@ -57,5 +59,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e("MainActivity", " is destroyed");
     }
 }

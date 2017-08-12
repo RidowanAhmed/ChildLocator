@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.example.ridowanahmed.childlocator.Fragment.ParentLoginFragment;
 import com.example.ridowanahmed.childlocator.Fragment.ParentRegisterFragment;
 import com.example.ridowanahmed.childlocator.HelperClass.ParentInformation;
-import com.example.ridowanahmed.childlocator.ParentActivity;
+import com.example.ridowanahmed.childlocator.ParentMapsActivity;
 import com.example.ridowanahmed.childlocator.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -48,7 +48,8 @@ public class ParentLoginActivity extends AppCompatActivity implements ParentRegi
 
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), ParentActivity.class));
+            finish();
+            startActivity(new Intent(ParentLoginActivity.this, ParentMapsActivity.class));
         }
 
         textView_register = (TextView) findViewById(R.id.textView_register);
@@ -113,7 +114,8 @@ public class ParentLoginActivity extends AppCompatActivity implements ParentRegi
 
         saveParentData(userName, userMobile, userEmail, userPassword);
 
-        startActivity(new Intent(getApplicationContext(), ParentActivity.class));
+        finish();
+        startActivity(new Intent(ParentLoginActivity.this, ParentMapsActivity.class));
     }
 
     private void saveParentData(String userName, String userMobile, String userEmail, String userPassword) {
@@ -128,8 +130,10 @@ public class ParentLoginActivity extends AppCompatActivity implements ParentRegi
     }
 
     @Override
-    public void loginUser(String userEmail, String userPassword) {
-        Log.e("Login ", "Email " + userEmail + " Password " + userPassword);
+    public void loginUser(String userEmail, final String userMobile, String userPassword) {
+        Log.e("LoginUser ", "Email " + userEmail + "Phone " + userMobile + " Password " + userPassword);
+
+        final String mobile = userMobile;
 
         progressDialog.setMessage("Login in.....");
         progressDialog.show();
@@ -139,7 +143,14 @@ public class ParentLoginActivity extends AppCompatActivity implements ParentRegi
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressDialog.dismiss();
                 if(task.isSuccessful()) {
-                    startActivity(new Intent(getApplicationContext(), ParentActivity.class));
+                    SharedPreferences mSharedPreferences = ParentLoginActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
+                    SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+                    mEditor.putString(getString(R.string.MOBILE_NUMBER), mobile);
+                    mEditor.commit();
+
+                    finish();
+                    startActivity(new Intent(ParentLoginActivity.this, ParentMapsActivity.class));
+
                 } else {
                     Toast.makeText(getApplicationContext(), "Couldn't Log In. Please try again", Toast.LENGTH_SHORT).show();
                 }

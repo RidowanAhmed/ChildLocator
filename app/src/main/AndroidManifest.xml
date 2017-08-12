@@ -7,6 +7,11 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
+
+    <permission
+        android:name="com.myapp.android.locationapi.maps.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -40,10 +45,10 @@
             android:name=".Registration.ParentLoginActivity"
             android:label="Child Locator" />
         <activity
-            android:name=".MapsActivity"
+            android:name=".ChildMapsActivity"
             android:label="Map" />
         <activity
-            android:name=".ParentActivity"
+            android:name=".ParentMapsActivity"
             android:label="@string/title_activity_parent" />
         <activity android:name=".SplashActivity">
             <intent-filter>

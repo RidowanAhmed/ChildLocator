@@ -34,7 +34,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class MapsActivity extends FragmentActivity implements
+public class ChildMapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -52,13 +52,13 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_maps_child);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.childMap);
         mapFragment.getMapAsync(this);
 
 
@@ -79,6 +79,7 @@ public class MapsActivity extends FragmentActivity implements
                             buildGoogleApiClient();
                         }
                         mMap.setMyLocationEnabled(true);
+                        mMap.animateCamera(CameraUpdateFactory.zoomBy(14));
                     }
                 } else {
                     Toast.makeText(getApplicationContext(),"Permission denied", Toast.LENGTH_SHORT).show();
@@ -121,7 +122,7 @@ public class MapsActivity extends FragmentActivity implements
         currentMarker = mMap.addMarker(markerOptions);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomBy(10));
+        mMap.animateCamera(CameraUpdateFactory.zoomBy(14));
 
         if(googleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
@@ -130,7 +131,7 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     private void saveData(Location lastLocation) {
-        SharedPreferences mSharedPreferences = MapsActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
+        SharedPreferences mSharedPreferences = ChildMapsActivity.this.getSharedPreferences(getString(R.string.PREF_FILE), MODE_PRIVATE);
         String childName = mSharedPreferences.getString(getString(R.string.CHILD_NAME), "");
         String childMobile = mSharedPreferences.getString(getString(R.string.MOBILE_NUMBER), "");
         Log.e("MapsActivity", childName + childMobile);

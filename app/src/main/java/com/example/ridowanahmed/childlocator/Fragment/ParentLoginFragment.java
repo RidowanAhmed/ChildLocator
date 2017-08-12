@@ -19,7 +19,7 @@ import com.example.ridowanahmed.childlocator.R;
  */
 
 public class ParentLoginFragment extends Fragment {
-    EditText editText_parentLoginEmail, editText_parentLoginPassword;
+    EditText editText_parentLoginEmail, editText_parentLoginMobile, editText_parentLoginPassword;
     ImageView button_parentLogin;
 
     OnLoginListener mOnLoginListener;
@@ -28,6 +28,7 @@ public class ParentLoginFragment extends Fragment {
         View view_parentLoginFragment = inflater.inflate(R.layout.fragment_parent_login, container, false);
 
         editText_parentLoginEmail = (EditText) view_parentLoginFragment.findViewById(R.id.editText_login_email);
+        editText_parentLoginMobile = (EditText) view_parentLoginFragment.findViewById(R.id.editText_login_mobile);
         editText_parentLoginPassword = (EditText) view_parentLoginFragment.findViewById(R.id.editText_login_password);
         button_parentLogin = (ImageView) view_parentLoginFragment.findViewById(R.id.button_login);
 
@@ -35,6 +36,7 @@ public class ParentLoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String email = editText_parentLoginEmail.getText().toString().trim();
+                String mobile = editText_parentLoginMobile.getText().toString().trim();
                 String password = editText_parentLoginPassword.getText().toString().trim();
 
                 if(TextUtils.isEmpty(email)) {
@@ -42,7 +44,7 @@ public class ParentLoginFragment extends Fragment {
                 } else if(TextUtils.isEmpty(password)) {
                     editText_parentLoginPassword.setError("Enter a valid password");
                 } else  {
-                    mOnLoginListener.loginUser(email, password);
+                    mOnLoginListener.loginUser(email, mobile, password);
                 }
             }
         });
@@ -68,7 +70,7 @@ public class ParentLoginFragment extends Fragment {
     }
 
     public interface OnLoginListener {
-        void loginUser(String userEmail, String userPassword);
+        void loginUser(String userEmail, String userMobile, String userPassword);
     }
 
 }
